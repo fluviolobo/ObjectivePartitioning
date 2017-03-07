@@ -21,6 +21,7 @@ data['state'] = {}
 # find all states and subsequent data
 state_flag = 0
 nodes_flag = 0
+elements_flag = 0
 num_lines = len(line_data)
 for i in range(0, num_lines):
 
@@ -28,12 +29,21 @@ for i in range(0, num_lines):
     if nodes_flag == 1:
         split_data = line_data[i].split(',')
         if len(split_data) > 1:
-            data['state'][state]['nodes']['number'].append(split_data[0])
-            data['state'][state]['nodes']['xcoord'].append(split_data[1])
-            data['state'][state]['nodes']['ycoord'].append(split_data[2])
-            data['state'][state]['nodes']['zcoord'].append(split_data[3][:-1])
+            data['state'][state]['nodes']['number'].append(float(split_data[0]))
+            data['state'][state]['nodes']['xcoord'].append(float(split_data[1]))
+            data['state'][state]['nodes']['ycoord'].append(float(split_data[2]))
+            data['state'][state]['nodes']['zcoord'].append(float(split_data[3][:-1]))
         else:
             pass
+    
+    elif elements_flag == 1:
+        split_data = line_data[i].split(',')
+        if len(split_data) > 1:
+            data['state'][state]['elements']['number'].append(float(split_data[0]))
+            data['state'][state]['elements']['value'].append(float(split_data[1][:-1]))
+        else:
+            pass
+        
     
     if line_data[i][0:6] == "*STATE":
         state_flag = 1
@@ -57,7 +67,10 @@ for i in range(0, num_lines):
         
     elif line_data[i][0:13] == "*ELEMENT_DATA":
         nodes_flag = 0
-
+        elements_flag = 1
+        data['state'][state]['elements'] = {}
+        data['state'][state]['elements']['number'] = []
+        data['state'][state]['elements']['value'] = []
 
 """
 # find nodes
