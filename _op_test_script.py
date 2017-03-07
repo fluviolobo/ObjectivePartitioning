@@ -7,13 +7,16 @@
 """
 
 from _op_functions_module import _browse_data_file
+from _op_functions_module import _parse_data
 
 # browse data file
 target_file, raw_data = _browse_data_file()
 
 # split raw daat into lines
-line_data = raw_data.split('\n')
 
+data = _parse_data(raw_data)
+
+"""
 # using dictionaries
 data = {}
 data['state'] = {}
@@ -71,7 +74,7 @@ for i in range(0, num_lines):
         data['state'][state]['elements'] = {}
         data['state'][state]['elements']['number'] = []
         data['state'][state]['elements']['value'] = []
-
+"""
 """
 # find nodes
 ## find where the nodes section starts
