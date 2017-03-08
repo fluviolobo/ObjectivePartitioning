@@ -17,14 +17,26 @@ def _browse_data_file():
     if target_file != None:
         raw_data = target_file.read()
         target_file.close()
-        #print "I got %d bytes from this file." % len(data)
+
+    # determining path of the file
+    file_path = str(target_file.name)
+
+    # determining the directory of the file
+    split_file_path = file_path.split("/")
+    file_dir = ""
+    for i in range(0, len(split_file_path)-1):
+        file_dir += split_file_path[i] + "/"
+
+    # determining the file name
+    file_name = split_file_path[len(split_file_path)-1]
+
     root.destroy()
-    return target_file, raw_data
+    return target_file, file_path, file_dir, file_name, raw_data
 
 
 # _parse_data()
 #   This function reads the PostView ASCii data exports and separates nodal and element data in a python dictionary
-def _parse_data(raw_data):
+def _parse_data(data_name, raw_data):
 
     data = {}
     data['state'] = {}
@@ -52,7 +64,7 @@ def _parse_data(raw_data):
             split_data = line_data[i].split(',')
             if len(split_data) > 1:
                 data['state'][state]['elements']['number'].append(float(split_data[0]))
-                data['state'][state]['elements']['value'].append(float(split_data[1][:-1]))
+                data['state'][state]['elements'][data_name].append(float(split_data[1][:-1]))
             else:
                 pass
             
@@ -83,7 +95,7 @@ def _parse_data(raw_data):
             elements_flag = 1
             data['state'][state]['elements'] = {}
             data['state'][state]['elements']['number'] = []
-            data['state'][state]['elements']['value'] = []
+            data['state'][state]['elements'][data_name] = []
 
     return data
 
