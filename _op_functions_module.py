@@ -42,6 +42,7 @@ def _parse_data(data_name, raw_data):
 
     data = {}
     data['state'] = {}
+    data['state']['number'] = []
 
     state_flag = 0
     nodes_flag = 0
@@ -76,6 +77,7 @@ def _parse_data(data_name, raw_data):
             state_flag = 1
             state = line_data[i][7:-1]
             print "STATE " + state + " Found"
+            data['state']['number'].append(int(state))
             data['state'][state] = {}
         # time
         elif line_data[i][0:11] == "*TIME_VALUE":
