@@ -76,33 +76,36 @@ def _2D_face_slider(data, dtype):
     fig, ax = plt.subplots()
     plt.subplots_adjust(bottom=0.25)
 
-    x = data['state'][state][dtype]['xcoord']
-    y = data['state'][state][dtype]['ycoord']
+    initial_state = data['state']['number'][0]                                      # initial data set state
+    final_state   = data['state']['number'][len(data['state']['number'])-1]         # final data set state
+
+    x = data['state'][str(initial_state)][dtype]['xcoord']
+    y = data['state'][str(initial_state)][dtype]['ycoord']
     #z = data['state'][state][dtype]['zcoord']
 
     l, = plt.plot(x, y, 'b.')
 
     axcolor = 'lightgoldenrodyellow'
-    axfreq = plt.axes([0.10, 0.1, 0.65, 0.03], facecolor=axcolor)
-    sfreq = Slider(axfreq, 'Freq', 1, 3, valinit=1)
+    ax_state = plt.axes([0.10, 0.1, 0.65, 0.03], facecolor=axcolor)
+    slider_state = Slider(ax_state, 'State', initial_state, final_state, valinit=initial_state)
 
     def update(val):
-        freq = sfreq.val
-        truncated = int(m.floor(freq))
-        print str(freq) + "," + str(truncated)
-        if freq >= truncated and freq < (truncated+1):
-            l.set_xdata(time[str(truncated-1)])
-            l.set_ydata(samp[str(truncated-1)])
+        current_state_val = slider_state.val
+        truncated_state_val = int(m.floor(current_state_val))
+        print str(current_state_val) + "," + str(truncated_state_val)
+        if current_state_val >= truncated_state_val and current_state_val < (truncated_state_val+1):
+            l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
+            l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
 
         fig.canvas.draw_idle()
 
-    sfreq.on_changed(update)
+    slider_state.on_changed(update)
 
     resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
     button = Button(resetax, 'Reset', color=axcolor, hovercolor='0.975')
 
     def reset(event):
-        sfreq.reset()
+        slider_state.reset()
 
     button.on_clicked(reset)
 
