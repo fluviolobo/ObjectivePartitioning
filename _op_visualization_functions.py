@@ -16,12 +16,27 @@ from    mpl_toolkits.mplot3d        import  Axes3D
 def _2D_plot_data(data, state, dtype):
     x = data['state'][state][dtype]['xcoord']
     y = data['state'][state][dtype]['ycoord']
+    z = data['state'][state][dtype]['zcoord']
 
     _2D_fig = plt.figure()
+    plt.subplot(131)
     plt.plot(x,y,'b.')
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.grid(True)
+
+    plt.subplot(132)
+    plt.plot(x,z,'b.')
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.grid(True)
+
+    plt.subplot(133)
+    plt.plot(y,z,'b.')
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.grid(True)
+    
     plt.show()
 
 # _3D_plot_data
