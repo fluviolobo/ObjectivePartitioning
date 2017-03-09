@@ -102,18 +102,3 @@ def _parse_data(data_name, raw_data):
     return data
 
 # end of _parse_data()
-
-# _plot_data
-#   This function plots the data sets with given input parameters
-def _3D_plot_data(data, state, dtype):
-    x = data['state'][state][dtype]['xcoord']
-    y = data['state'][state][dtype]['ycoord']
-    z = data['state'][state][dtype]['zcoord']
-
-    _3D_fig = plt.figure()
-    plt3 = _3D_fig.add_subplot(111, projection='3d')
-    plt3.scatter(x,y,z)
-    plt3.set_xlabel('X Label')
-    plt3.set_ylabel('Y Label')
-    plt3.set_zlabel('Z Label')
-    plt.show()
