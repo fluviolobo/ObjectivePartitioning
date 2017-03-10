@@ -62,12 +62,12 @@ def _parse_data(data_name, raw_data):
             #print split_data
             if len(split_data) > 1:
                 if state_flag == 0:
-                    data['state']['init']['nodes']['number'].append(float(split_data[0]))
+                    data['state']['init']['nodes']['number'].append(int(split_data[0]))
                     data['state']['init']['nodes']['xcoord'].append(float(split_data[1]))
                     data['state']['init']['nodes']['ycoord'].append(float(split_data[2]))
                     data['state']['init']['nodes']['zcoord'].append(float(split_data[3][:-1]))
                 elif state_flag == 1:
-                    data['state'][state]['nodes']['number'].append(float(split_data[0]))
+                    data['state'][state]['nodes']['number'].append(int(split_data[0]))
                     data['state'][state]['nodes']['xcoord'].append(float(split_data[1]))
                     data['state'][state]['nodes']['ycoord'].append(float(split_data[2]))
                     data['state'][state]['nodes']['zcoord'].append(float(split_data[3][:-1]))

@@ -8,6 +8,8 @@
     03/10/2017
 """
 
+from timeStamp      import fullStamp
+
 # _centroid_calc
 #   This function calculates the centroid of the elements that compose a mesh
 #   Why do we calculate centroids?
@@ -15,21 +17,22 @@
 #       This calculation is more efficient than checking if a majority of an elements nodes fall within a region of interest
 #       Centroids can also be used for less convoluted graphing of the deformable body
 def _centroid_calc(data):
+    print fullStamp() + " Calculating Element Centroids"
 
     N_states = len(data['state']['number'])
     N_elements = len(data['state']['init']['elements']['number'])
 
-    for h in range(0, 3):#N_states):
+    for h in range(0, N_states):
 
         if h == 0:
 
             state = 'init'
-            print state
+            print fullStamp() + " Calculating Centroids for State " + state
 
         elif h > 0:
 
             state = str(data['state']['number'][h-1])
-            print state
+            print fullStamp() + " Calculating Centroids for State " + state
     
         data['state'][state]['elements']['centroid'] = []
 
@@ -52,6 +55,14 @@ def _centroid_calc(data):
 
                 N_nodes = len(data['state']['init']['nodes']['number'])
 
+                x_coord_sum += data['state'][state]['nodes']['xcoord'][selected_ele_node-1]
+                #print fullStamp() + " X Sum = " + str(x_coord_sum)
+                y_coord_sum += data['state'][state]['nodes']['ycoord'][selected_ele_node-1]
+                #print fullStamp() + " Y Sum = " + str(y_coord_sum)
+                z_coord_sum += data['state'][state]['nodes']['zcoord'][selected_ele_node-1]
+                #print fullStamp() + " Z Sum = " + str(z_coord_sum)
+
+                """
                 for k in range(0, N_nodes):
 
                     node = data['state']['init']['nodes']['number'][k]
@@ -65,7 +76,8 @@ def _centroid_calc(data):
                         #print fullStamp() + " Y Sum = " + str(y_coord_sum)
                         z_coord_sum += data['state'][state]['nodes']['zcoord'][k]
                         #print fullStamp() + " Z Sum = " + str(z_coord_sum)
-
+                """
+                
             #print fullStamp() + " X Centroid = " + str(x_coord_sum/N_element_nodes)
             #print fullStamp() + " Y Centroid = " + str(y_coord_sum/N_element_nodes)
             #print fullStamp() + " Z Centroid = " + str(z_coord_sum/N_element_nodes)
