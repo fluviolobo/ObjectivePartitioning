@@ -12,8 +12,8 @@ from    matplotlib.widgets          import  Slider, Button, RadioButtons
 from    mpl_toolkits.mplot3d        import  Axes3D
 
 
-from _op_functions_module           import _browse_data_file
-from _op_functions_module           import _parse_data
+from _op_parsing_functions          import _browse_data_file
+from _op_parsing_functions          import _parse_data
 from _op_visualization_functions    import _2D_plot_data
 from _op_visualization_functions    import _2D_plot_face
 from _op_visualization_functions    import _2D_face_slider

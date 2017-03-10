@@ -107,7 +107,7 @@ def _parse_data(data_name, raw_data):
         if line_data[i][0:6] == "*STATE":
             state_flag = 1
             state = line_data[i][7:-1]
-            #print "STATE " + state + " Found"
+            print "STATE " + state + " Found"
             data['state']['number'].append(int(state))
             data['state'][state] = {}
         # time
@@ -155,6 +155,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 0
             element_connectivity_flag = 0
             element_data_flag = 1
+            data['state'][state]['elements'] = {}
             data['state'][state]['elements']['number'] = []
             data['state'][state]['elements'][data_name] = []
 
