@@ -45,27 +45,56 @@ def _parse_data(data_name, raw_data):
     data['state']['number'] = []
 
     state_flag = 0
-    nodes_flag = 0
+    node_coordinates_flag = 0
     nodal_data_flag = 0
-    elements_flag = 0
+    element_connectivity_flag = 0
+    element_data_flag = 0
     line_data = raw_data.split('\n')
     num_lines = len(line_data)
     for i in range(0, num_lines):
 
-        # nodal data collection
-        if nodes_flag == 1:
+        # node coordinates collection
+        if node_coordinates_flag == 1:
             split_data = line_data[i].split(',')
             #print split_data
             if len(split_data) > 1:
-                data['state'][state]['nodes']['number'].append(float(split_data[0]))
-                data['state'][state]['nodes']['xcoord'].append(float(split_data[1]))
-                data['state'][state]['nodes']['ycoord'].append(float(split_data[2]))
-                data['state'][state]['nodes']['zcoord'].append(float(split_data[3][:-1]))
+                if state_flag == 0:
+                    data['state']['init']['nodes']['number'].append(float(split_data[0]))
+                    data['state']['init']['nodes']['xcoord'].append(float(split_data[1]))
+                    data['state']['init']['nodes']['ycoord'].append(float(split_data[2]))
+                    data['state']['init']['nodes']['zcoord'].append(float(split_data[3][:-1]))
+                elif state_flag == 1:
+                    data['state'][state]['nodes']['number'].append(float(split_data[0]))
+                    data['state'][state]['nodes']['xcoord'].append(float(split_data[1]))
+                    data['state'][state]['nodes']['ycoord'].append(float(split_data[2]))
+                    data['state'][state]['nodes']['zcoord'].append(float(split_data[3][:-1]))
             else:
                 pass
 
+        # nodal data collection
+        if nodal_data_flag == 1:
+            split_data = line_data[i].split(',')
+            #print split_data
+            if len(split_data) > 1:
+                data['state'][state]['nodes'][data_name].append(float(split_data[1][:-1]))
+            else:
+                pass
+
+        # element connectivity collection
+        if element_connectivity_flag == 1:
+            split_data = line_data[i].split(',')
+            #print split_data
+            if len(split_data) > 1:
+                #print len(split_data)
+                connected_nodes = []
+                for j in range(1,len(split_data)):
+                    connected_nodes.append(int(split_data[j]))
+                data['state']['init']['elements']['connectivity'].append(connected_nodes)
+            else:
+                pass
+        
         # element data collection
-        elif elements_flag == 1:
+        elif element_data_flag == 1:
             split_data = line_data[i].split(',')
             if len(split_data) > 1:
                 data['state'][state]['elements']['number'].append(float(split_data[0]))
@@ -78,32 +107,54 @@ def _parse_data(data_name, raw_data):
         if line_data[i][0:6] == "*STATE":
             state_flag = 1
             state = line_data[i][7:-1]
-            print "STATE " + state + " Found"
+            #print "STATE " + state + " Found"
             data['state']['number'].append(int(state))
             data['state'][state] = {}
         # time
         elif line_data[i][0:11] == "*TIME_VALUE":
             time_value = line_data[i][12:-1]
-            print "TIME_VALUE " + time_value
+            #print "TIME_VALUE " + time_value
             data['state'][state]['time'] = time_value
-        # nodal data
-        elif line_data[i][0:6] == "*NODES" and state_flag == 1:
-            nodes_flag = 1
-            elements_flag = 0
-            data['state'][state]['nodes'] = {}
-            data['state'][state]['nodes']['number'] = []
-            data['state'][state]['nodes']['xcoord'] = []
-            data['state'][state]['nodes']['ycoord'] = []
-            data['state'][state]['nodes']['zcoord'] = []
+        # nodal coordinates
+        elif line_data[i][0:6] == "*NODES":
+            node_coordinates_flag = 1
+            nodal_data_flag = 0
+            element_connectivity_flag = 0
+            element_data_flag = 0
+            if state_flag == 0:
+                data['state']['init'] = {}
+                data['state']['init']['nodes'] = {}
+                data['state']['init']['nodes']['number'] = []
+                data['state']['init']['nodes']['xcoord'] = []
+                data['state']['init']['nodes']['ycoord'] = []
+                data['state']['init']['nodes']['zcoord'] = []
+            elif state_flag == 1:
+                data['state'][state]['nodes'] = {}
+                data['state'][state]['nodes']['number'] = []
+                data['state'][state]['nodes']['xcoord'] = []
+                data['state'][state]['nodes']['ycoord'] = []
+                data['state'][state]['nodes']['zcoord'] = []
         # nodal data
         elif line_data[i][0:11] == "*NODAL_DATA":
-            nodes_flag = 0
+            node_coordinates_flag = 0
             nodal_data_flag = 1
+            element_connectivity_flag = 0
+            element_data_flag = 0
+            data['state'][state]['nodes'][data_name] = []
+        # element connectivity
+        elif line_data[i][0:9] == "*ELEMENTS":
+            node_coordinates_flag = 0
+            nodal_data_flag = 0
+            element_connectivity_flag = 1
+            element_data_flag = 0
+            data['state']['init']['elements'] = {}
+            data['state']['init']['elements']['connectivity'] = []
         # element data   
         elif line_data[i][0:13] == "*ELEMENT_DATA":
-            nodes_flag = 0
-            elements_flag = 1
-            data['state'][state]['elements'] = {}
+            node_coordinates_flag = 0
+            nodal_data_flag = 0
+            element_connectivity_flag = 0
+            element_data_flag = 1
             data['state'][state]['elements']['number'] = []
             data['state'][state]['elements'][data_name] = []
 
