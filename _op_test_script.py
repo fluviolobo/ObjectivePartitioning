@@ -27,12 +27,12 @@ target_file, file_path, file_dir, file_name, raw_data = _browse_data_file()
 data = _parse_data(file_name, raw_data)
 
 # 2D plot data
-_2D_plot_data(data, '3', 'nodes')
+#_2D_plot_data(data, '3', 'nodes')
 
 # 2D plot data face
-_2D_plot_face(data, '1', 'nodes', 'yx')
+#_2D_plot_face(data, '1', 'nodes', 'yx')
 
-_2D_face_slider(data, 'nodes')
+_2D_face_slider(data, 'zx', 'nodes')
 
 # 3D plot data
 #_3D_plot_data(data, '1', 'nodes')

@@ -71,7 +71,7 @@ def _2D_plot_face(data, state, dtype, face):
 # _2D_face_slider
 #   This function plots the data of a specific face from the entire data set
 #   The state of the data to be plotted is chosen through a slider
-def _2D_face_slider(data, dtype):
+def _2D_face_slider(data, face, dtype):
 
     fig, ax = plt.subplots()
     plt.subplots_adjust(bottom=0.25)
@@ -79,29 +79,54 @@ def _2D_face_slider(data, dtype):
     initial_state = data['state']['number'][0]                                      # initial data set state
     final_state   = data['state']['number'][len(data['state']['number'])-1]         # final data set state
 
-    x = data['state'][str(initial_state)][dtype]['xcoord']
-    y = data['state'][str(initial_state)][dtype]['ycoord']
-    #z = data['state'][state][dtype]['zcoord']
+    x = data['state'][str(initial_state)][dtype]['xcoord']                          # pulling the initial data array for x
+    y = data['state'][str(initial_state)][dtype]['ycoord']                          # ...y
+    z = data['state'][str(initial_state)][dtype]['zcoord']                          # ...z
 
-    l, = plt.plot(x, y, 'b.')
-    min_x = min( data['state'][str(initial_state)][dtype]['xcoord'] )
-    max_x = max( data['state'][str(final_state)][dtype]['xcoord'] )
-    min_y = min( data['state'][str(initial_state)][dtype]['ycoord'] )
-    max_y = max( data['state'][str(final_state)][dtype]['ycoord'] )
-    plt.axis( [(min_x*0.90), (max_x*1.10), (min_y*0.90), (max_y*1.10)] )
+    min_x = min( data['state'][str(initial_state)][dtype]['xcoord'] )               # finding the min value of x in the set, for scaling
+    max_x = max( data['state'][str(final_state)][dtype]['xcoord'] )                 # finding the max value of x in the set, for scaling
+    min_y = min( data['state'][str(initial_state)][dtype]['ycoord'] )               # ...y
+    max_y = max( data['state'][str(final_state)][dtype]['ycoord'] )                 # ...y
+    min_z = min( data['state'][str(initial_state)][dtype]['zcoord'] )               # ...z
+    max_z = max( data['state'][str(final_state)][dtype]['zcoord'] )                 # ...z
+    
+    if face == 'xy' or face == 'yx':
+        l, = plt.plot(x, y, 'b.')
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.axis( [(min_x*0.90), (max_x*1.10), (min_y*0.90), (max_y*1.10)] )
+    elif face == 'xz' or face == 'zx':
+        l, = plt.plot(x, z, 'b.')
+        plt.xlabel('X')
+        plt.ylabel('Z')
+        plt.axis( [(min_x*0.90), (max_x*1.10), (min_z*0.90), (max_z*1.10)] )
+    elif face == 'yz' or face == 'zy':
+        l, = plt.plot(y, z, 'b.')
+        plt.xlabel('Y')
+        plt.ylabel('Z')
+        plt.axis( [(min_y*0.90), (max_y*1.10), (min_z*0.90), (max_z*1.10)] )
+
     plt.grid(True)
 
     axcolor = 'lightgoldenrodyellow'
-    ax_state = plt.axes([0.10, 0.1, 0.65, 0.03], facecolor=axcolor)
-    slider_state = Slider(ax_state, 'State', initial_state, final_state, valinit=initial_state)
+    ax_state = plt.axes([0.10, 0.10, 0.80, 0.05], facecolor=axcolor)
+    slider_state = Slider(ax_state, 'State', initial_state, final_state, valinit=initial_state, valfmt='%3d')
 
     def update(val):
         current_state_val = slider_state.val
         truncated_state_val = int(m.floor(current_state_val))
-        print str(current_state_val) + "," + str(truncated_state_val)
+        #print str(current_state_val) + "," + str(truncated_state_val)
         if current_state_val >= truncated_state_val and current_state_val < (truncated_state_val+1):
-            l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
-            l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] ) 
+            if face == 'xy' or face == 'yx':
+                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
+                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
+            elif face == 'xz' or face == 'zx':
+                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
+                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['zcoord'] )
+            elif face == 'yz' or face == 'zy':
+                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
+                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['zcoord'] )
+
         fig.canvas.draw()
 
     slider_state.on_changed(update)
