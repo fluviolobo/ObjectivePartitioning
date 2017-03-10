@@ -43,6 +43,9 @@ def _parse_data(data_name, raw_data):
     data = {}
     data['state'] = {}
     data['state']['number'] = []
+    data['state']['init'] = {}
+    data['state']['init']['nodes'] = {}
+    data['state']['init']['elements'] = {}
 
     state_flag = 0
     node_coordinates_flag = 0
@@ -110,7 +113,9 @@ def _parse_data(data_name, raw_data):
             state = line_data[i][7:-1]
             print "STATE " + state + " Found"
             data['state']['number'].append(int(state))
-            data['state'][state] = {}
+            data['state'][state] = {}       
+            data['state'][state]['nodes'] = {}
+            data['state'][state]['elements'] = {}
         # time
         elif line_data[i][0:11] == "*TIME_VALUE":
             time_value = line_data[i][12:-1]
@@ -123,14 +128,14 @@ def _parse_data(data_name, raw_data):
             element_connectivity_flag = 0
             element_data_flag = 0
             if state_flag == 0:
-                data['state']['init'] = {}
-                data['state']['init']['nodes'] = {}
+                #data['state']['init'] = {}
+                #data['state']['init']['nodes'] = {}
                 data['state']['init']['nodes']['number'] = []
                 data['state']['init']['nodes']['xcoord'] = []
                 data['state']['init']['nodes']['ycoord'] = []
                 data['state']['init']['nodes']['zcoord'] = []
             elif state_flag == 1:
-                data['state'][state]['nodes'] = {}
+                #data['state'][state]['nodes'] = {}
                 data['state'][state]['nodes']['number'] = []
                 data['state'][state]['nodes']['xcoord'] = []
                 data['state'][state]['nodes']['ycoord'] = []
@@ -148,7 +153,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 0
             element_connectivity_flag = 1
             element_data_flag = 0
-            data['state']['init']['elements'] = {}
+            #data['state']['init']['elements'] = {}
             data['state']['init']['elements']['number'] = []
             data['state']['init']['elements']['connectivity'] = []
         # element data   
@@ -157,7 +162,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 0
             element_connectivity_flag = 0
             element_data_flag = 1
-            data['state'][state]['elements'] = {}
+            #data['state'][state]['elements'] = {}
             data['state'][state]['elements']['number'] = []
             data['state'][state]['elements'][data_name] = []
 

@@ -16,44 +16,57 @@
 #       Centroids can also be used for less convoluted graphing of the deformable body
 def _centroid_calc(data):
 
+    N_states = len(data['state']['number'])
     N_elements = len(data['state']['init']['elements']['number'])
 
-    data['state']['init']['elements']['centroid'] = []
+    for h in range(0, 3):#N_states):
 
-    for i in range(0, N_elements):
+        if h == 0:
 
-        ele_num = data['state']['init']['elements']['number'][i]
-        #print fullStamp() + " Element Number = " + str(ele_num)
-        ele_nodes = data['state']['init']['elements']['connectivity'][i]
-        #print fullStamp() + " Element Nodes = " + str(ele_nodes)
-        N_element_nodes = len(data['state']['init']['elements']['connectivity'][i])
-        #print fullStamp() + " Nodes per Element = " + str(N_element_nodes)
+            state = 'init'
+            print state
 
-        x_coord_sum = 0.0
-        y_coord_sum = 0.0
-        z_coord_sum = 0.0
-        for j in range(0, N_element_nodes):
+        elif h > 0:
 
-            selected_ele_node = data['state']['init']['elements']['connectivity'][i][j]
-            #print fullStamp() + " Selected Node = " + str(selected_ele_node)
+            state = str(data['state']['number'][h-1])
+            print state
+    
+        data['state'][state]['elements']['centroid'] = []
 
-            N_nodes = len(data['state']['init']['nodes']['number'])
+        for i in range(0, N_elements):
 
-            for k in range(0, N_nodes):
+            ele_num = data['state']['init']['elements']['number'][i]
+            #print fullStamp() + " Element Number = " + str(ele_num)
+            ele_nodes = data['state']['init']['elements']['connectivity'][i]
+            #print fullStamp() + " Element Nodes = " + str(ele_nodes)
+            N_element_nodes = len(data['state']['init']['elements']['connectivity'][i])
+            #print fullStamp() + " Nodes per Element = " + str(N_element_nodes)
 
-                node = data['state']['init']['nodes']['number'][k]
-                #print node
-                
-                if selected_ele_node == node:
+            x_coord_sum = 0.0
+            y_coord_sum = 0.0
+            z_coord_sum = 0.0
+            for j in range(0, N_element_nodes):
 
-                    x_coord_sum += data['state']['init']['nodes']['xcoord'][k]
-                    #print fullStamp() + " X Sum = " + str(x_coord_sum)
-                    y_coord_sum += data['state']['init']['nodes']['ycoord'][k]
-                    #print fullStamp() + " Y Sum = " + str(y_coord_sum)
-                    z_coord_sum += data['state']['init']['nodes']['zcoord'][k]
-                    #print fullStamp() + " Z Sum = " + str(z_coord_sum)
+                selected_ele_node = data['state']['init']['elements']['connectivity'][i][j]
+                #print fullStamp() + " Selected Node = " + str(selected_ele_node)
 
-        #print fullStamp() + " X Centroid = " + str(x_coord_sum/N_element_nodes)
-        #print fullStamp() + " Y Centroid = " + str(y_coord_sum/N_element_nodes)
-        #print fullStamp() + " Z Centroid = " + str(z_coord_sum/N_element_nodes)
-        data['state']['init']['elements']['centroid'].append( [x_coord_sum/N_element_nodes, y_coord_sum/N_element_nodes, z_coord_sum/N_element_nodes] )
+                N_nodes = len(data['state']['init']['nodes']['number'])
+
+                for k in range(0, N_nodes):
+
+                    node = data['state']['init']['nodes']['number'][k]
+                    #print node
+                    
+                    if selected_ele_node == node:
+
+                        x_coord_sum += data['state'][state]['nodes']['xcoord'][k]
+                        #print fullStamp() + " X Sum = " + str(x_coord_sum)
+                        y_coord_sum += data['state'][state]['nodes']['ycoord'][k]
+                        #print fullStamp() + " Y Sum = " + str(y_coord_sum)
+                        z_coord_sum += data['state'][state]['nodes']['zcoord'][k]
+                        #print fullStamp() + " Z Sum = " + str(z_coord_sum)
+
+            #print fullStamp() + " X Centroid = " + str(x_coord_sum/N_element_nodes)
+            #print fullStamp() + " Y Centroid = " + str(y_coord_sum/N_element_nodes)
+            #print fullStamp() + " Z Centroid = " + str(z_coord_sum/N_element_nodes)
+            data['state'][state]['elements']['centroid'].append( [x_coord_sum/N_element_nodes, y_coord_sum/N_element_nodes, z_coord_sum/N_element_nodes] )
