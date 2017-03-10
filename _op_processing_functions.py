@@ -1,0 +1,59 @@
+"""
+    Objective Partitioning
+    --Processing Functions
+
+    This module contains functions that modify, alter or processes parsed data sets
+
+    Fluvio L Lobo Fenoglietto
+    03/10/2017
+"""
+
+# _centroid_calc
+#   This function calculates the centroid of the elements that compose a mesh
+#   Why do we calculate centroids?
+#       Centroids are used to better determine the elements that fall within a region of interest
+#       This calculation is more efficient than checking if a majority of an elements nodes fall within a region of interest
+#       Centroids can also be used for less convoluted graphing of the deformable body
+def _centroid_calc(data):
+
+    N_elements = len(data['state']['init']['elements']['number'])
+
+    data['state']['init']['elements']['centroid'] = []
+
+    for i in range(0, N_elements):
+
+        ele_num = data['state']['init']['elements']['number'][i]
+        #print fullStamp() + " Element Number = " + str(ele_num)
+        ele_nodes = data['state']['init']['elements']['connectivity'][i]
+        #print fullStamp() + " Element Nodes = " + str(ele_nodes)
+        N_element_nodes = len(data['state']['init']['elements']['connectivity'][i])
+        #print fullStamp() + " Nodes per Element = " + str(N_element_nodes)
+
+        x_coord_sum = 0.0
+        y_coord_sum = 0.0
+        z_coord_sum = 0.0
+        for j in range(0, N_element_nodes):
+
+            selected_ele_node = data['state']['init']['elements']['connectivity'][i][j]
+            #print fullStamp() + " Selected Node = " + str(selected_ele_node)
+
+            N_nodes = len(data['state']['init']['nodes']['number'])
+
+            for k in range(0, N_nodes):
+
+                node = data['state']['init']['nodes']['number'][k]
+                #print node
+                
+                if selected_ele_node == node:
+
+                    x_coord_sum += data['state']['init']['nodes']['xcoord'][k]
+                    #print fullStamp() + " X Sum = " + str(x_coord_sum)
+                    y_coord_sum += data['state']['init']['nodes']['ycoord'][k]
+                    #print fullStamp() + " Y Sum = " + str(y_coord_sum)
+                    z_coord_sum += data['state']['init']['nodes']['zcoord'][k]
+                    #print fullStamp() + " Z Sum = " + str(z_coord_sum)
+
+        #print fullStamp() + " X Centroid = " + str(x_coord_sum/N_element_nodes)
+        #print fullStamp() + " Y Centroid = " + str(y_coord_sum/N_element_nodes)
+        #print fullStamp() + " Z Centroid = " + str(z_coord_sum/N_element_nodes)
+        data['state']['init']['elements']['centroid'].append( [x_coord_sum/N_element_nodes, y_coord_sum/N_element_nodes, z_coord_sum/N_element_nodes] )

@@ -89,6 +89,7 @@ def _parse_data(data_name, raw_data):
                 connected_nodes = []
                 for j in range(1,len(split_data)):
                     connected_nodes.append(int(split_data[j]))
+                data['state']['init']['elements']['number'].append(int(split_data[0]))
                 data['state']['init']['elements']['connectivity'].append(connected_nodes)
             else:
                 pass
@@ -97,7 +98,7 @@ def _parse_data(data_name, raw_data):
         elif element_data_flag == 1:
             split_data = line_data[i].split(',')
             if len(split_data) > 1:
-                data['state'][state]['elements']['number'].append(float(split_data[0]))
+                data['state'][state]['elements']['number'].append(int(split_data[0]))
                 data['state'][state]['elements'][data_name].append(float(split_data[1][:-1]))
             else:
                 pass
@@ -148,6 +149,7 @@ def _parse_data(data_name, raw_data):
             element_connectivity_flag = 1
             element_data_flag = 0
             data['state']['init']['elements'] = {}
+            data['state']['init']['elements']['number'] = []
             data['state']['init']['elements']['connectivity'] = []
         # element data   
         elif line_data[i][0:13] == "*ELEMENT_DATA":
