@@ -84,6 +84,12 @@ def _2D_face_slider(data, dtype):
     #z = data['state'][state][dtype]['zcoord']
 
     l, = plt.plot(x, y, 'b.')
+    min_x = min( data['state'][str(initial_state)][dtype]['xcoord'] )
+    max_x = max( data['state'][str(final_state)][dtype]['xcoord'] )
+    min_y = min( data['state'][str(initial_state)][dtype]['ycoord'] )
+    max_y = max( data['state'][str(final_state)][dtype]['ycoord'] )
+    plt.axis( [(min_x*0.90), (max_x*1.10), (min_y*0.90), (max_y*1.10)] )
+    plt.grid(True)
 
     axcolor = 'lightgoldenrodyellow'
     ax_state = plt.axes([0.10, 0.1, 0.65, 0.03], facecolor=axcolor)
@@ -95,9 +101,8 @@ def _2D_face_slider(data, dtype):
         print str(current_state_val) + "," + str(truncated_state_val)
         if current_state_val >= truncated_state_val and current_state_val < (truncated_state_val+1):
             l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
-            l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
-
-        fig.canvas.draw_idle()
+            l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] ) 
+        fig.canvas.draw()
 
     slider_state.on_changed(update)
 

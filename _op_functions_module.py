@@ -46,6 +46,7 @@ def _parse_data(data_name, raw_data):
 
     state_flag = 0
     nodes_flag = 0
+    nodal_data_flag = 0
     elements_flag = 0
     line_data = raw_data.split('\n')
     num_lines = len(line_data)
@@ -54,6 +55,7 @@ def _parse_data(data_name, raw_data):
         # nodal data collection
         if nodes_flag == 1:
             split_data = line_data[i].split(',')
+            #print split_data
             if len(split_data) > 1:
                 data['state'][state]['nodes']['number'].append(float(split_data[0]))
                 data['state'][state]['nodes']['xcoord'].append(float(split_data[1]))
@@ -93,6 +95,10 @@ def _parse_data(data_name, raw_data):
             data['state'][state]['nodes']['xcoord'] = []
             data['state'][state]['nodes']['ycoord'] = []
             data['state'][state]['nodes']['zcoord'] = []
+        # nodal data
+        elif line_data[i][0:11] == "*NODAL_DATA":
+            nodes_flag = 0
+            nodal_data_flag = 1
         # element data   
         elif line_data[i][0:13] == "*ELEMENT_DATA":
             nodes_flag = 0
