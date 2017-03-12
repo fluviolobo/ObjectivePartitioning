@@ -87,3 +87,5 @@ def _centroid_calc(data):
             data['state'][state]['elements']['centroid']['xcoord'].append(x_coord_sum/N_element_nodes)
             data['state'][state]['elements']['centroid']['ycoord'].append(y_coord_sum/N_element_nodes)
             data['state'][state]['elements']['centroid']['zcoord'].append(z_coord_sum/N_element_nodes)
+
+    return data
