@@ -22,7 +22,7 @@ def _centroid_calc(data):
     N_states = len(data['state']['number'])
     N_elements = len(data['state']['init']['elements']['number'])
 
-    for h in range(0, N_states):
+    for h in range(0, N_states+1):
 
         if h == 0:
 
