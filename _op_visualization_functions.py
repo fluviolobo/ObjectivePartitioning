@@ -17,33 +17,36 @@ from    timeStamp                   import  fullStamp
 # _2D_plot_data
 #   This function plots the 2D data sets of the specified face
 def _2D_plot_data(data, state, dtype):
-    
+
+    scatter_format = ''
     if dtype == 'nodes':
         print fullStamp() + " 2D Plotting of " + dtype + " at state " + str(state)
         x = data['state'][state][dtype]['xcoord']
         y = data['state'][state][dtype]['ycoord']
         z = data['state'][state][dtype]['zcoord']
+        scatter_format = 'b.'
     elif dtype == 'elements':
         print fullStamp() + " 2D Plotting of " + dtype + "(centroid) at state " + str(state)
         x = data['state'][state][dtype]['centroid']['xcoord']
         y = data['state'][state][dtype]['centroid']['ycoord']
         z = data['state'][state][dtype]['centroid']['zcoord']
+        scatter_format = 'r.'
 
     _2D_fig = plt.figure()
     plt.subplot(131)
-    plt.plot(x,y,'b.')
+    plt.plot(x,y,scatter_format)
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.grid(True)
 
     plt.subplot(132)
-    plt.plot(x,z,'b.')
+    plt.plot(x,z,scatter_format)
     plt.xlabel('X')
     plt.ylabel('Z')
     plt.grid(True)
 
     plt.subplot(133)
-    plt.plot(y,z,'b.')
+    plt.plot(y,z,scatter_format)
     plt.xlabel('Y')
     plt.ylabel('Z')
     plt.grid(True)
