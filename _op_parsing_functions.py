@@ -10,6 +10,7 @@ import  Tkinter
 import  tkFileDialog
 import  matplotlib.pyplot           as      plt
 from    mpl_toolkits.mplot3d        import  Axes3D
+from    timeStamp                   import  fullStamp
 
 # _browse_data_file
 #   This function allows the user to browse and select the data file to be analyze
@@ -39,6 +40,8 @@ def _browse_data_file():
 # _parse_data()
 #   This function reads the PostView ASCii data exports and separates nodal and element data in a python dictionary
 def _parse_data(data_name, raw_data):
+
+    print fullStamp() + " Parsing Data"
 
     data = {}
     data['state'] = {}
@@ -111,7 +114,7 @@ def _parse_data(data_name, raw_data):
         if line_data[i][0:6] == "*STATE":
             state_flag = 1
             state = line_data[i][7:-1]
-            print "STATE " + state + " Found"
+            print fullStamp() + " Parsing data for State " + str(state)
             data['state']['number'].append(int(state))
             data['state'][state] = {}       
             data['state'][state]['nodes'] = {}
@@ -119,7 +122,7 @@ def _parse_data(data_name, raw_data):
         # time
         elif line_data[i][0:11] == "*TIME_VALUE":
             time_value = line_data[i][12:-1]
-            #print "TIME_VALUE " + time_value
+            print fullStamp() + " Parsing time value for State " + str(state)
             data['state'][state]['time'] = time_value
         # nodal coordinates
         elif line_data[i][0:6] == "*NODES":
@@ -128,6 +131,7 @@ def _parse_data(data_name, raw_data):
             element_connectivity_flag = 0
             element_data_flag = 0
             if state_flag == 0:
+                print fullStamp() + " Parsing nodal coordinates for State init"
                 #data['state']['init'] = {}
                 #data['state']['init']['nodes'] = {}
                 data['state']['init']['nodes']['number'] = []
@@ -135,6 +139,7 @@ def _parse_data(data_name, raw_data):
                 data['state']['init']['nodes']['ycoord'] = []
                 data['state']['init']['nodes']['zcoord'] = []
             elif state_flag == 1:
+                print fullStamp() + " Parsing nodal coordinates for State " + str(state)
                 #data['state'][state]['nodes'] = {}
                 data['state'][state]['nodes']['number'] = []
                 data['state'][state]['nodes']['xcoord'] = []
@@ -146,6 +151,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 1
             element_connectivity_flag = 0
             element_data_flag = 0
+            print fullStamp() + " Parsing nodal values for State " + str(state)
             data['state'][state]['nodes'][data_name] = []
         # element connectivity
         elif line_data[i][0:9] == "*ELEMENTS":
@@ -153,6 +159,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 0
             element_connectivity_flag = 1
             element_data_flag = 0
+            print fullStamp() + " Parsing element connectivity for State init"
             #data['state']['init']['elements'] = {}
             data['state']['init']['elements']['number'] = []
             data['state']['init']['elements']['connectivity'] = []
@@ -162,6 +169,7 @@ def _parse_data(data_name, raw_data):
             nodal_data_flag = 0
             element_connectivity_flag = 0
             element_data_flag = 1
+            print fullStamp() + " Parsing element values for State " + str(state)
             #data['state'][state]['elements'] = {}
             data['state'][state]['elements']['number'] = []
             data['state'][state]['elements'][data_name] = []
