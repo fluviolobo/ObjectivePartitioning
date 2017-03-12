@@ -90,30 +90,49 @@ def _2D_face_slider(data, face, dtype):
 
     initial_state = data['state']['number'][0]                                      # initial data set state
     final_state   = data['state']['number'][len(data['state']['number'])-1]         # final data set state
+    print final_state
 
-    x = data['state'][str(initial_state)][dtype]['xcoord']                          # pulling the initial data array for x
-    y = data['state'][str(initial_state)][dtype]['ycoord']                          # ...y
-    z = data['state'][str(initial_state)][dtype]['zcoord']                          # ...z
+    scatter_format = ''
+    if dtype == 'nodes':
+        x = data['state'][str(initial_state)][dtype]['xcoord']                          # pulling the initial data array for x
+        y = data['state'][str(initial_state)][dtype]['ycoord']                          # ...y
+        z = data['state'][str(initial_state)][dtype]['zcoord']                          # ...z
 
-    min_x = min( data['state'][str(initial_state)][dtype]['xcoord'] )               # finding the min value of x in the set, for scaling
-    max_x = max( data['state'][str(final_state)][dtype]['xcoord'] )                 # finding the max value of x in the set, for scaling
-    min_y = min( data['state'][str(initial_state)][dtype]['ycoord'] )               # ...y
-    max_y = max( data['state'][str(final_state)][dtype]['ycoord'] )                 # ...y
-    min_z = min( data['state'][str(initial_state)][dtype]['zcoord'] )               # ...z
-    max_z = max( data['state'][str(final_state)][dtype]['zcoord'] )                 # ...z
+        min_x = min( data['state'][str(initial_state)][dtype]['xcoord'] )               # finding the min value of x in the set, for scaling
+        max_x = max( data['state'][str(final_state)][dtype]['xcoord'] )                 # finding the max value of x in the set, for scaling
+        min_y = min( data['state'][str(initial_state)][dtype]['ycoord'] )               # ...y
+        max_y = max( data['state'][str(final_state)][dtype]['ycoord'] )                 # ...y
+        min_z = min( data['state'][str(initial_state)][dtype]['zcoord'] )               # ...z
+        max_z = max( data['state'][str(final_state)][dtype]['zcoord'] )                 # ...z
+
+        scatter_format = 'b.'
+        
+    elif dtype == 'elements':
+        x = data['state'][str(initial_state)][dtype]['centroid']['xcoord']                          # pulling the initial data array for x
+        y = data['state'][str(initial_state)][dtype]['centroid']['ycoord']                          # ...y
+        z = data['state'][str(initial_state)][dtype]['centroid']['zcoord']                          # ...z
+
+        min_x = min( data['state'][str(initial_state)][dtype]['centroid']['xcoord'] )               # finding the min value of x in the set, for scaling
+        max_x = max( data['state'][str(final_state)][dtype]['centroid']['xcoord'] )                 # finding the max value of x in the set, for scaling
+        min_y = min( data['state'][str(initial_state)][dtype]['centroid']['ycoord'] )               # ...y
+        max_y = max( data['state'][str(final_state)][dtype]['centroid']['ycoord'] )                 # ...y
+        min_z = min( data['state'][str(initial_state)][dtype]['centroid']['zcoord'] )               # ...z
+        max_z = max( data['state'][str(final_state)][dtype]['centroid']['zcoord'] )                 # ...z
+
+        scatter_format = 'r.'
     
     if face == 'xy' or face == 'yx':
-        l, = plt.plot(x, y, 'b.')
+        l, = plt.plot(x, y, scatter_format)
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.axis( [(min_x*0.90), (max_x*1.10), (min_y*0.90), (max_y*1.10)] )
     elif face == 'xz' or face == 'zx':
-        l, = plt.plot(x, z, 'b.')
+        l, = plt.plot(x, z, scatter_format)
         plt.xlabel('X')
         plt.ylabel('Z')
         plt.axis( [(min_x*0.90), (max_x*1.10), (min_z*0.90), (max_z*1.10)] )
     elif face == 'yz' or face == 'zy':
-        l, = plt.plot(y, z, 'b.')
+        l, = plt.plot(y, z, scatter_format)
         plt.xlabel('Y')
         plt.ylabel('Z')
         plt.axis( [(min_y*0.90), (max_y*1.10), (min_z*0.90), (max_z*1.10)] )
@@ -129,15 +148,26 @@ def _2D_face_slider(data, face, dtype):
         truncated_state_val = int(m.floor(current_state_val))
         #print str(current_state_val) + "," + str(truncated_state_val)
         if current_state_val >= truncated_state_val and current_state_val < (truncated_state_val+1):
-            if face == 'xy' or face == 'yx':
-                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
-                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
-            elif face == 'xz' or face == 'zx':
-                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['xcoord'] )
-                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['zcoord'] )
-            elif face == 'yz' or face == 'zy':
-                l.set_xdata( data['state'][str(truncated_state_val)][dtype]['ycoord'] )
-                l.set_ydata( data['state'][str(truncated_state_val)][dtype]['zcoord'] )
+            if dtype == 'nodes':
+                if face == 'xy' or face == 'yx':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['xcoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['ycoord'] )
+                elif face == 'xz' or face == 'zx':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['xcoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['zcoord'] )
+                elif face == 'yz' or face == 'zy':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['ycoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['zcoord'] )
+            elif dtype == 'elements':
+                if face == 'xy' or face == 'yx':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['xcoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['ycoord'] )
+                elif face == 'xz' or face == 'zx':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['xcoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['zcoord'] )
+                elif face == 'yz' or face == 'zy':
+                    l.set_xdata( data['state'][str(truncated_state_val)][dtype]['centroid']['ycoord'] )
+                    l.set_ydata( data['state'][str(truncated_state_val)][dtype]['centroid']['zcoord'] )
 
         fig.canvas.draw()
 
