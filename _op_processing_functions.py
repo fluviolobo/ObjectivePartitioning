@@ -34,7 +34,10 @@ def _centroid_calc(data):
             state = str(data['state']['number'][h-1])
             print fullStamp() + " Calculating Centroids for State " + state
     
-        data['state'][state]['elements']['centroid'] = []
+        data['state'][state]['elements']['centroid'] = {}
+        data['state'][state]['elements']['centroid']['xcoord'] = []
+        data['state'][state]['elements']['centroid']['ycoord'] = []
+        data['state'][state]['elements']['centroid']['zcoord'] = []
 
         for i in range(0, N_elements):
 
@@ -81,4 +84,6 @@ def _centroid_calc(data):
             #print fullStamp() + " X Centroid = " + str(x_coord_sum/N_element_nodes)
             #print fullStamp() + " Y Centroid = " + str(y_coord_sum/N_element_nodes)
             #print fullStamp() + " Z Centroid = " + str(z_coord_sum/N_element_nodes)
-            data['state'][state]['elements']['centroid'].append( [x_coord_sum/N_element_nodes, y_coord_sum/N_element_nodes, z_coord_sum/N_element_nodes] )
+            data['state'][state]['elements']['centroid']['xcoord'].append(x_coord_sum/N_element_nodes)
+            data['state'][state]['elements']['centroid']['ycoord'].append(y_coord_sum/N_element_nodes)
+            data['state'][state]['elements']['centroid']['zcoord'].append(z_coord_sum/N_element_nodes)
