@@ -12,13 +12,22 @@ import  math                        as      m
 import  matplotlib.pyplot           as      plt
 from    matplotlib.widgets          import  Slider, Button, RadioButtons
 from    mpl_toolkits.mplot3d        import  Axes3D
+from    timeStamp                   import  fullStamp
 
 # _2D_plot_data
 #   This function plots the 2D data sets of the specified face
 def _2D_plot_data(data, state, dtype):
-    x = data['state'][state][dtype]['xcoord']
-    y = data['state'][state][dtype]['ycoord']
-    z = data['state'][state][dtype]['zcoord']
+    
+    if dtype == 'nodes':
+        print fullStamp() + " 2D Plotting of " + dtype + " at state " + str(state)
+        x = data['state'][state][dtype]['xcoord']
+        y = data['state'][state][dtype]['ycoord']
+        z = data['state'][state][dtype]['zcoord']
+    elif dtype == 'elements':
+        print fullStamp() + " 2D Plotting of " + dtype + "(centroid) at state " + str(state)
+        x = data['state'][state][dtype]['centroid']['xcoord']
+        y = data['state'][state][dtype]['centroid']['ycoord']
+        z = data['state'][state][dtype]['centroid']['zcoord']
 
     _2D_fig = plt.figure()
     plt.subplot(131)
