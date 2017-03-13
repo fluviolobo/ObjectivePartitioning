@@ -16,7 +16,19 @@ def _sphere_shape(R,x0,y0,z0):
     
     print fullStamp() + " Generating Shape"
 
-    rads = np.linspace(-np.pi, np.pi, 200)
-    degrees = rads*(180/np.pi)
+    shapes = {}
+    shapes['sphere'] = {}
+    shapes['sphere']['R'] = R
+    shapes['sphere']['origin'] = R
+    
+    # generating radian and degree arrays
+    theta_rads = np.linspace(-np.pi, np.pi, 200)
+    theta_degrees = rads*(180/np.pi)
+
+    phi_rads = np.linspace(-np.pi, np.pi, 200)
+    phi_degrees = rads*(180/np.pi)
+
+    # calculating cartesian coordinates
+    
 
     return rads, degrees
