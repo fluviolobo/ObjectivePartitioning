@@ -20,13 +20,14 @@ from _op_visualization_functions    import _2D_plot_data
 from _op_visualization_functions    import _2D_plot_face
 from _op_visualization_functions    import _2D_face_slider
 from _op_visualization_functions    import _3D_plot_data
+from _op_shape_functions            import _sphere_shape
 
 # browse data file
-target_file, file_path, file_dir, file_name, raw_data = _browse_data_file()
+#target_file, file_path, file_dir, file_name, raw_data = _browse_data_file()
 
 # split raw daat into lines
 
-data = _parse_data(file_name, raw_data)
+#data = _parse_data(file_name, raw_data)
 
 # 2D plot data
 #_2D_plot_data(data, '80', 'nodes')
@@ -39,6 +40,6 @@ data = _parse_data(file_name, raw_data)
 # 3D plot data
 #_3D_plot_data(data, '1', 'nodes')
 
-_centroid_calc(data)
+#_centroid_calc(data)
 #_2D_plot_data(data, '80', 'elements')
-_2D_face_slider(data, 'xy', 'elements')
+#_2D_face_slider(data, 'xy', 'elements')
