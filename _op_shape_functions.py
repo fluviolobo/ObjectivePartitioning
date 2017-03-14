@@ -19,7 +19,14 @@ def _sphere_shape(R,x0,y0,z0):
     shapes = {}
     shapes['sphere'] = {}
     shapes['sphere']['R'] = R
-    shapes['sphere']['origin'] = R
+    shapes['sphere']['origin'] = {}
+    shapes['sphere']['origin']['x0'] = x0
+    shapes['sphere']['origin']['y0'] = y0
+    shapes['sphere']['origin']['z0'] = z0
+    shapes['sphere']['surface'] = {}
+    shapes['sphere']['surface']['xcoord'] = []
+    shapes['sphere']['surface']['ycoord'] = []
+    shapes['sphere']['surface']['zcoord'] = []
     
     # generating radian and degree arrays
     theta_rads = np.linspace(-np.pi, np.pi, 200)
