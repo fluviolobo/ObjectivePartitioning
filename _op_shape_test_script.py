@@ -16,15 +16,18 @@ from timeStamp                      import *
 from _op_parsing_functions          import _browse_data_file
 from _op_parsing_functions          import _parse_data
 from _op_processing_functions       import _centroid_calc
-from _op_visualization_functions    import _2D_plot_data
-from _op_visualization_functions    import _2D_plot_face
-from _op_visualization_functions    import _2D_face_slider
-from _op_visualization_functions    import _3D_plot_data
 from _op_shape_functions            import _sphere_shape
+from _op_visualization_functions    import _2D_plot_shape
+from _op_visualization_functions    import _3D_plot_shape
 
 # create shape --sphere
 x0 = 0
 y0 = 0
 z0 = 0
 R = 10
-_sphere_shape(R,x0,y0,z0)
+res = 20
+shapes = _sphere_shape(R,x0,y0,z0,res)
+
+_2D_plot_shape(shapes,'sphere')
+
+_3D_plot_shape(shapes, 'sphere')

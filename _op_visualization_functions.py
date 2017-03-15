@@ -53,6 +53,39 @@ def _2D_plot_data(data, state, dtype):
     
     plt.show()
 
+# _2D_plot_shape
+#   This function plots the objective shape data
+def _2D_plot_shape(shapes,stype):
+
+    print fullStamp() + " 2D Plotting of " + str(shapes)
+    x = shapes[stype]['surface']['xcoord']
+    y = shapes[stype]['surface']['ycoord']
+    z = shapes[stype]['surface']['zcoord']
+    scatter_format = 'b.'
+
+    _2D_fig = plt.figure()
+    plt.subplot(131)
+    plt.plot(x,y,scatter_format)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid(True)
+
+    plt.subplot(132)
+    plt.plot(x,z,scatter_format)
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.grid(True)
+
+    plt.subplot(133)
+    plt.plot(y,z,scatter_format)
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.grid(True)
+    
+    plt.show()
+    
+
+
 # _2D_plot_face
 #   This function plots only the data of a specific face of the data set
 def _2D_plot_face(data, state, dtype, face):
@@ -198,4 +231,18 @@ def _3D_plot_data(data, state, dtype):
     plt3.set_zlabel('Z Label')
     plt.show()
 
+# _3D_plot_shape
+#   This function plots the shape data sets in 3D
+def _3D_plot_shape(shapes, stype):
 
+    x = shapes[stype]['surface']['xcoord']
+    y = shapes[stype]['surface']['ycoord']
+    z = shapes[stype]['surface']['zcoord']
+    
+    _3D_fig = plt.figure()
+    plt3 = _3D_fig.add_subplot(111, projection='3d')
+    plt3.scatter(x,y,z)
+    plt3.set_xlabel('X Label')
+    plt3.set_ylabel('Y Label')
+    plt3.set_zlabel('Z Label')
+    plt.show()
