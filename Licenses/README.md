@@ -4,7 +4,7 @@
 
 <b>Objective Partitioning</b> is a free-to-use, free-to-modify and free-to-distribute software released under the [MIT License](https://opensource.org/licenses/MIT)
 
-The University of Minnesota released the software licensed over <b>Objective Partitioning</b>
+The University of Minnesota [released](https://github.com/fluviolobo/ObjectivePartitioning/blob/master/Licenses/Letter%20of%20OSS%20Release%20Approval%20-%20Signed%20-%2020160062.pdf) the software licensed over <b>Objective Partitioning</b>
 
 ## 2016
 
